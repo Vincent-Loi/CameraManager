@@ -46,7 +46,7 @@ class ViewController: UIViewController {
         }
         if !cameraManager.hasFlash {
             flashModeButton.isEnabled = false
-            flashModeButton.setTitle("No flash", for: UIControlState())
+            flashModeButton.setTitle("No flash", for: UIControl.State())
         }
         
     }
@@ -72,7 +72,7 @@ class ViewController: UIViewController {
         cameraManager.showErrorBlock = { [weak self] (erTitle: String, erMessage: String) -> Void in
         
             let alertController = UIAlertController(title: erTitle, message: erMessage, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: { (alertAction) -> Void in  }))
+            alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) -> Void in  }))
             
             self?.present(alertController, animated: true, completion: nil)
         }
@@ -84,11 +84,11 @@ class ViewController: UIViewController {
     {
         switch (cameraManager.changeFlashMode()) {
         case .off:
-            sender.setTitle("Flash Off", for: UIControlState())
+            sender.setTitle("Flash Off", for: UIControl.State())
         case .on:
-            sender.setTitle("Flash On", for: UIControlState())
+            sender.setTitle("Flash On", for: UIControl.State())
         case .auto:
-            sender.setTitle("Flash Auto", for: UIControlState())
+            sender.setTitle("Flash Auto", for: UIControl.State())
         }
     }
     
@@ -112,7 +112,7 @@ class ViewController: UIViewController {
             })
         case .videoWithMic, .videoOnly:
             sender.isSelected = !sender.isSelected
-            sender.setTitle(" ", for: UIControlState.selected)
+            sender.setTitle(" ", for: .selected)
             sender.backgroundColor = sender.isSelected ? UIColor.red : UIColor.green
             if sender.isSelected {
                 cameraManager.startRecordingVideo()
@@ -133,9 +133,9 @@ class ViewController: UIViewController {
         case .stillImage:
             cameraButton.isSelected = false
             cameraButton.backgroundColor = UIColor.green
-            sender.setTitle("Image", for: UIControlState())
+            sender.setTitle("Image", for: UIControl.State())
         case .videoWithMic, .videoOnly:
-            sender.setTitle("Video", for: UIControlState())
+            sender.setTitle("Video", for: UIControl.State())
         }
     }
     
@@ -144,9 +144,9 @@ class ViewController: UIViewController {
         cameraManager.cameraDevice = cameraManager.cameraDevice == CameraDevice.front ? CameraDevice.back : CameraDevice.front
         switch (cameraManager.cameraDevice) {
         case .front:
-            sender.setTitle("Front", for: UIControlState())
+            sender.setTitle("Front", for: UIControl.State())
         case .back:
-            sender.setTitle("Back", for: UIControlState())
+            sender.setTitle("Back", for: UIControl.State())
         }
     }
     
@@ -158,7 +158,9 @@ class ViewController: UIViewController {
             self.askForPermissionsButton.alpha = 0
             self.askForPermissionsLabel.alpha = 0
             if permissionGranted {
-                self.addCameraToView()
+                DispatchQueue.main.async { [weak self] in
+                    self?.addCameraToView()
+                }
             }
         })
     }
@@ -167,13 +169,13 @@ class ViewController: UIViewController {
         
         switch (cameraManager.changeQualityMode()) {
         case .preset1280:
-            sender.setTitle("1280", for: UIControlState())
+            sender.setTitle("1280", for: UIControl.State())
         case .high:
-            sender.setTitle("High", for: UIControlState())
+            sender.setTitle("High", for: UIControl.State())
         case .low:
-            sender.setTitle("Low", for: UIControlState())
+            sender.setTitle("Low", for: UIControl.State())
         case .medium:
-            sender.setTitle("Medium", for: UIControlState())
+            sender.setTitle("Medium", for: UIControl.State())
         }
     }
 }
